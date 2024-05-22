@@ -1,0 +1,9 @@
+description = "anka authentication starter basic cas"
+
+dependencies {
+    implementation libraries.ankaspringboot
+    implementation libraries.ankacas
+    compileOnly libraries.ankacascompile
+    implementation project(":authentication-pac4j")
+
+}

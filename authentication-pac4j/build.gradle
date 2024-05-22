@@ -1,0 +1,6 @@
+description = "anka authentication for pac4j basic cas"
+
+
+dependencies {
+    implementation libraries.ankapac4j
+}

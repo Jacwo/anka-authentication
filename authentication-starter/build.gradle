@@ -8,6 +8,7 @@ dependencies {
     implementation project(":authentication-jdbc")
     implementation project(":authentication-service")
     implementation project(":authentication-rest")
+    implementation "org.apereo.cas:cas-server-core-authentication-api:$version"
 /*    implementation "org.apereo.cas:cas-server-support-gauth:$version"
     implementation "org.apereo.cas:cas-server-support-gauth-jpa:$version"
 

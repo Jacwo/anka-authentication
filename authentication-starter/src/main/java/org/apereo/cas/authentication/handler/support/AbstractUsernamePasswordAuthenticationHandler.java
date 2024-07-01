@@ -16,6 +16,7 @@ import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.support.password.PasswordPolicyContext;
 import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.util.AESUtil;
 import org.apereo.cas.util.function.FunctionUtils;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.FailedLoginException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -80,7 +82,10 @@ public abstract class AbstractUsernamePasswordAuthenticationHandler extends Abst
         val originalUserPass = (UsernamePasswordCredential) credential;
         val userPass = new UsernamePasswordCredential();
         FunctionUtils.doUnchecked(__ -> BeanUtils.copyProperties(userPass, originalUserPass));
+        userPass.setCrypto(originalUserPass.getCrypto());
         transformUsername(userPass);
+        transformOriginalPassword(originalUserPass);
+
         transformPassword(userPass);
         Map<String, Object> customFields = new LinkedHashMap<>();
         customFields.put("service",service);
@@ -89,12 +94,24 @@ public abstract class AbstractUsernamePasswordAuthenticationHandler extends Abst
         return authenticateUsernamePasswordInternal(userPass, originalUserPass.toPassword());
     }
 
+    private void transformOriginalPassword(UsernamePasswordCredential originalUserPass) {
+        if(originalUserPass.getCrypto()!=null){
+            String decrypt = AESUtil.decrypt(new String(originalUserPass.getPassword()), originalUserPass.getCrypto());
+            originalUserPass.setPassword(decrypt.toCharArray());
+        }
+    }
+
     protected void transformPassword(final UsernamePasswordCredential userPass) throws FailedLoginException, AccountNotFoundException {
         if (StringUtils.isBlank(userPass.toPassword())) {
             throw new FailedLoginException("Password is null.");
         }
+
+        if(userPass.getCrypto()!=null){
+            String decrypt = AESUtil.decrypt(new String(userPass.getPassword()), userPass.getCrypto());
+            userPass.setPassword(decrypt.toCharArray());
+        }
         log.debug("Attempting to encode credential password via [{}] for [{}]", passwordEncoder.getClass().getName(), userPass.getUsername());
-        val transformedPsw = passwordEncoder.encode(userPass.toPassword());
+        String transformedPsw = passwordEncoder.encode(userPass.toPassword());
         if (StringUtils.isBlank(transformedPsw)) {
             throw new AccountNotFoundException("Encoded password is null.");
         }

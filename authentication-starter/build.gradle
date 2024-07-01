@@ -8,6 +8,15 @@ dependencies {
     implementation project(":authentication-jdbc")
     implementation project(":authentication-service")
     implementation project(":authentication-rest")
+    implementation project(":authentication-pm")
+    implementation project(":authentication-api")
+/*    implementation "org.apereo.cas:cas-server-core-rest-api:$version"
+    implementation "org.apereo.cas:cas-server-core-authentication-throttle:$version"
+    implementation "org.apereo.cas:cas-server-core-audit-api:$version"*/
+    implementation "org.springframework.security:spring-security-web:$springSecurityVersion"
+    implementation "org.springframework.security:spring-security-config:$springSecurityVersion"
+
+
     implementation "org.apereo.cas:cas-server-core-authentication-api:$version"
     implementation "org.apereo.cas:cas-server-support-oauth:$version"
     implementation "org.apereo.cas:cas-server-support-oauth-api:$version"
@@ -16,16 +25,15 @@ dependencies {
     implementation "org.apereo.cas:cas-server-support-oauth-services:$version"
     implementation "org.apereo.cas:cas-server-support-oauth-webflow:$version"
 
-    implementation "org.apereo.cas:cas-server-support-pm:$version"
-    implementation "org.apereo.cas:cas-server-support-pm-core:$version"
-    implementation "org.apereo.cas:cas-server-support-pm-webflow:$version"
 
 
-    /*implementation ("org.apereo.cas:cas-server-support-jpa-ticket-registry:$version") {
+    implementation ("org.apereo.cas:cas-server-support-jpa-ticket-registry:$version") {
         exclude(group: "org.apereo.cas", module: "cas-server-core-monitor")
 
     }
-*/
+    compileOnly "org.apereo.cas:cas-server-core-webflow-api:$version"
+    compileOnly "org.apereo.cas:cas-server-core-services-api:$version"
+
     /*    implementation "org.apereo.cas:cas-server-support-gauth:$version"
       implementation "org.apereo.cas:cas-server-support-gauth-jpa:$version"
       implementation "org.apereo.cas:cas-server-support-otp-mfa:$version"

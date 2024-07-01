@@ -36,7 +36,7 @@
                 <div id="login-form-controls" th:unless="${loginFormViewable or loginFormEnabled}">
                     <div id="loginErrorsPanel" class="alert alert-danger banner banner-danger banner-dismissible"
                          th:if="${#fields.hasErrors('*')}">
-                        <p th:each="err : ${#fields.errors('*')}" th:utext="${err + ' '}">Example error</p>
+                        <p class="field-error" th:each="err : ${#fields.errors('*')}" th:utext="${err + ' '}">Example error</p>
                         <!--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
                     </div>
                 </div>
@@ -56,7 +56,7 @@
 
                     <div id="loginErrorsPanel" class="banner banner-danger alert alert-danger banner-dismissible"
                          th:if="${#fields.hasErrors('*')}" role="alert">
-                        <p th:each="err : ${#fields.errors('*')}" th:utext="${err + ' '}">Example error</p>
+                        <p class="field-error" th:each="err : ${#fields.errors('*')}" th:utext="${err + ' '}">Example error</p>
                         <!--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
                     </div>
                     <section class="cas-field form-group my-3" id="usernameSection">
@@ -302,6 +302,10 @@
                         <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
                         <input type="hidden" name="_eventId" value="submit"/>
                         <input type="hidden" name="geolocation"/>
+                        <input type="hidden" name="crypto" th:value="${crypto}"/>
+<!--
+                        <input type="hidden" name="credential" th:object="${credential}"/>
+-->
 
                         <p th:if="${#strings.equalsIgnoreCase(httpRequestMethod, 'POST')}">
                             <span th:each="entry : ${httpRequestInitialPostParameters}" th:remove="tag">
@@ -387,6 +391,9 @@
                     });
                 });
             </script>
+
+            <script type="text/javascript" src="/auth-ui/public/casLoginView/import.js"></script>
+
         </div>
 
         <div th:if="${loginFormViewable and loginFormEnabled}">

@@ -43,9 +43,6 @@ https://download.java.net/java/GA/jdk21.0.2/f2283984656d49d69e91c558476027ac/13/
 
 2. configurePasswordResetFlow 密码流程
 
-## 测试
-
-https://i-blog.csdnimg.cn/direct/d58139fb5da046649c8bf29a1fcd559a.png
 
 ## 如何新增功能
 
